@@ -61,26 +61,60 @@ Then, open [http://localhost:3000](http://localhost:3000) in your browser to vie
 
 ---
 
-## Editing the Project
+## Setting up Virtual Machine using EC2
+Follow this tutorial: [Easily Deploy Full Stack Node.js](https://www.youtube.com/watch?v=nQdyiK7-VlQ)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you make changes.
+[Code Snippets](https://www.sammeechward.com/deploying-full-stack-js-to-aws-ec2)
 
-This project uses `next/font` to automatically optimize and load Inter, a custom Google Font.
+## To connect (with MacOS)
+Locate your private key in your local directory. 
+This is the key used to launch this EC2 instance.
+Then move it to the root .ssh directory file.
+```bash
+mv california-mac-1.pem ~/.ssh
+cd ~/.ssh
+```
 
----
+Run this command, if necessary, to ensure your key is not publicly viewable.
+```bash
+chmod 400 "california-mac-1.pem"
+```
 
-## Learn More
+Connect to your instance using its Public DNS:
+```bash
+ssh -i "california-mac-1.pem" ubuntu@ec2-3-89-21-49.compute-1.amazonaws.com
+```
 
-To learn more about Next.js, check out the following resources:
+You can find your private key name and address on you EC2 dashboard instance. On your EC2 dashboard > instances, select the instance then click connect. Then click the SSH Client tab.
 
-- [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - Interactive Next.js tutorial.
-- [Next.js GitHub Repository](https://github.com/vercel/next.js) - Your feedback and contributions are welcome!
+#### On your Virtual Machine
+Once you successfully connect, first thing you need to do is update
+packages on your VM
+```bash
+sudo apt update
+sudo apt upgrade
+```
 
----
+Install Node.js to run your javascript application
+```bash
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
 
-## Deploy on Vercel
+## Transfer your app source code to the VM
+#### On your Localhost
+This rsync command will only sync up files when something changes.
+Make sure that you use your private key and address to use the code below.
+```bash
+rsync -avz --exclude 'node_modules' --exclude '.git' --exclude '.env' \
+-e "ssh -i ~/.ssh/california-mac-1.pem" \
+. ubuntu@ec2-3-89-21-49.compute-1.amazonaws.com:~/app
+```
 
-The easiest way to deploy your Next.js app is to use the Vercel Platform from the creators of Next.js.
+## To run your app
+First install all your dependencies
+```bash
+ npm install
+ ```
 
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+ Then run build for .ts/.js applications like this one.
