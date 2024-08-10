@@ -101,7 +101,7 @@ curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
-## Transfer your app source code to the VM
+## Transfer your app source code from local to the VM
 #### On your Localhost
 This rsync command will only sync up files when something changes.
 Make sure that you use your private key and address to use the code below.
@@ -112,9 +112,15 @@ rsync -avz --exclude 'node_modules' --exclude '.git' --exclude '.env' \
 ```
 
 ## To run your app
-First install all your dependencies
+1. First install all your dependencies
 ```bash
  npm install
  ```
 
- Then run build for .ts/.js applications like this one.
+2. Compile using:
+```bash
+npm run build
+npm run start
+```
+
+....STUCK HERE......
