@@ -1,5 +1,5 @@
 const http = require('http')
-const port = 8080
+const port = 3000
 
 // Create a server object:
 const server = http.createServer(function (req, res) {
@@ -20,6 +20,6 @@ server.listen(port, function (error) {
     }
     // Else sent message of listening
     else {
-        console.log('Server is listening on port' + port);
+        console.log(`Server is listening on port: ${port}`);
     }
 })
